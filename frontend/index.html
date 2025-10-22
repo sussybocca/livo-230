@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Livo</title>
+</head>
+<body>
+<h1>Livo Demo</h1>
+<textarea id="desc" placeholder="Describe your app"></textarea><br>
+<button onclick="generate()">Generate App</button>
+<pre id="output"></pre>
+
+<script>
+async function generate() {
+    const description = document.getElementById('desc').value;
+    const res = await fetch('/.netlify/functions/generate', {
+        method: 'POST',
+        body: JSON.stringify({description}),
+        headers: {'Content-Type': 'application/json'}
+    });
+    const data = await res.json();
+    document.getElementById('output').textContent =
+        "app.py:\n" + data.app_py + "\n\nrequirements.txt:\n" + data.requirements_txt;
+}
+</script>
+</body>
+</html>
